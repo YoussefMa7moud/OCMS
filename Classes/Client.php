@@ -65,6 +65,31 @@ class Client {
             return 0; // Invalid height
         }
     }
+
+
+    public function WaitingForPlan($db) {
+        $query = "SELECT * FROM client WHERE CurrentWorkout IS NULL";
+    
+        $stmt = $db->prepare($query);
+
+        if (!$stmt) {
+            return "Error preparing statement: " . $db->error;
+        }
+    
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return "Error executing query: " . $stmt->error;
+        }
+    }
+    
+
+
+
+
+
 }
 
 

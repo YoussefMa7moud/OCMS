@@ -1,5 +1,18 @@
+
 <?php
-include'./Classes/DB_Connection.php';
+include './Classes/DB_Connection.php';
+include './Classes/Client.php';
+
+
+// Create a Client object
+$client = new Client("Example Name", "example@example.com", "1234567890", 25, 70, 175, "Premium");
+
+// Call WaitingForPlan method
+$result = $client->WaitingForPlan($conn);
+
+
+
+
 
 ?>
 
@@ -140,6 +153,8 @@ include'./Classes/DB_Connection.php';
 <body>
 <?php include('./Components/Nav.php'); ?>
 
+
+
     <div class="main-content">
         <div class="date-display" id="currentDate"></div>
 
@@ -161,23 +176,41 @@ include'./Classes/DB_Connection.php';
             </div>
         </div>
 
-        <div class="section">
-            <h2><i class="fas fa-clipboard-list"></i> Waiting for Workout Plan</h2>
-            <div class="client-box">
-                <span>Mike Johnson</span>
-                <div>
-                    <button onclick="viewProfile('Mike Johnson')">View Profile</button>
-                    <button onclick="createWorkoutPlan('Mike Johnson')">Create Plan</button>
-                </div>
-            </div>
-            <div class="client-box">
-                <span>Sarah Williams</span>
-                <div>
-                    <button onclick="viewProfile('Sarah Williams')">View Profile</button>
-                    <button onclick="createWorkoutPlan('Sarah Williams')">Create Plan</button>
-                </div>
-            </div>
-        </div>
+
+
+
+
+
+
+
+       
+      <?php
+
+if (is_array($result)) {
+
+    echo ' <div class="section">';
+    echo ' <h2><i class="fas fa-clipboard-list"></i> Waiting for Workout Plan</h2>';
+   
+ foreach ($result as $row) {
+    echo '<div class="client-box">';
+     echo '<span>' . htmlspecialchars($row['Name']) . '</span>';
+     echo '<div>';
+     echo '<a href="Client-Profile.php" >Create Plan</a>';
+
+     echo '</div>';
+     echo '</div>';
+     
+ }
+ echo '</div>';
+} else {
+
+ echo "<p>Error: $result</p>";
+}
+
+
+
+
+?>
     </div>
 
     <script>
@@ -188,20 +221,9 @@ include'./Classes/DB_Connection.php';
             dateDisplay.textContent = now.toLocaleDateString('en-US', options);
         }
 
-        function viewProfile(name) {
-            alert(`Viewing profile of ${name}`);
-        }
-
-        function openWorkoutPlan(name) {
-            alert(`Opening workout plan for ${name}`);
-        }
-
-        function createWorkoutPlan(name) {
-            alert(`Creating workout plan for ${name}`);
-        }
-
+    
         updateDate();
-        setInterval(updateDate, 60000); // Update every minute
+        setInterval(updateDate, 60000); 
     </script>
 </body>
 </html>

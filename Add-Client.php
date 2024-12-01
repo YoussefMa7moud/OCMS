@@ -197,9 +197,9 @@ mysqli_close($conn);
                 <label for="membershipType">Membership Type:</label>
                 <select id="membershipType" name="membershipType" required>
                     <option value="">Select Membership</option>
-                    <option value="basic">Email</option>
-                    <option value="silver">Whatsapp</option>
-                    <option value="gold">Personal</option>
+                    <option value="Email">Email</option>
+                    <option value="Whatsapp">Whatsapp</option>
+                    <option value="Personal">Personal</option>
                 </select>
                 
                 <label for="membershipStart">Membership Start Date:</label>
@@ -213,14 +213,6 @@ mysqli_close($conn);
         </div>
     </div>
 
-    <script>
-        // document.getElementById('addClientForm').addEventListener('submit', function(e) {
-        //     e.preventDefault();
-     
-        //     alert('Member added successfully!');
-        //     this.reset();
-        // });
-    </script>
 </body>
 </html>
 
