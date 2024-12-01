@@ -1,39 +1,60 @@
 <?php
 
-include'./Classes/DB_Connection.php';
+include './Classes/DB_Connection.php';
 
 class Client {
-    private $clientid;
     private $name;
+    private $email;
     private $phoneNumber;
     private $age;
     private $currentWeight;
     private $height;
     private $membershipType;
-    private $membershipStartDate;
-    private $membershipDuration;
-    private $driveHistory;
-    private $currentWorkout;
-    private $currentDiet;
-    private $coachID;
+    public $membershipStartDate;
+    public $membershipDuration;
 
-    
-    public function __construct($clientid, $name, $phoneNumber, $age, $currentWeight, $height, 
-                                $membershipType, $membershipStartDate, $membershipDuration, 
-                                $driveHistory, $currentWorkout, $currentDiet, $coachID) {
-        $this->clientid = $clientid;
+    public function __construct($name, $email, $phoneNumber, $age, $currentWeight, $height, $membershipType) {
         $this->name = $name;
+        $this->email = $email;
         $this->phoneNumber = $phoneNumber;
         $this->age = $age;
         $this->currentWeight = $currentWeight;
         $this->height = $height;
         $this->membershipType = $membershipType;
-        $this->membershipStartDate = $membershipStartDate;
-        $this->membershipDuration = $membershipDuration;
-        $this->driveHistory = $driveHistory;
-        $this->currentWorkout = $currentWorkout;
-        $this->currentDiet = $currentDiet;
-        $this->coachID = $coachID;
+    }
+
+    public function addClientToDB($db) {
+        $query = "INSERT INTO client (name , email, phoneNumber, age, currentWeight, height, membershipType, 
+                    membershipStartDate, membershipDuration) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $db->prepare($query);
+        if (!$stmt) {
+            return "Error preparing statement: " . $db->error;
+        }
+
+        // Bind parameters to the statement
+        $stmt->bind_param(
+            "sssiddssi", 
+            $this->name, 
+            $this->email, 
+            $this->phoneNumber, 
+            $this->age, 
+            $this->currentWeight, 
+            $this->height, 
+            $this->membershipType, 
+            $this->membershipStartDate, 
+            $this->membershipDuration
+        );
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            $stmt->close();
+            return "Client successfully added to the database!";
+        } else {
+            $stmt->close();
+            return "Error executing query: " . $stmt->error;
+        }
     }
 
     public function calculateBMI() {
@@ -44,32 +65,11 @@ class Client {
             return 0; // Invalid height
         }
     }
-
-    public function getNotes() {
-  
-        return "SELECT * FROM NOTES WHERE clientid = " . $this->clientid;
-    }
-
-    // Function to get CoachID
-    public function getCoachID() {
-        return $this->coachID;
-    }
-
-
-    public function getClientid() { return $this->clientid; }
-    public function getName() { return $this->name; }
-    public function getPhoneNumber() { return $this->phoneNumber; }
-    public function getAge() { return $this->age; }
-    public function getCurrentWeight() { return $this->currentWeight; }
-    public function getHeight() { return $this->height; }
-    public function getMembershipType() { return $this->membershipType; }
-    public function getMembershipStartDate() { return $this->membershipStartDate; }
-    public function getMembershipDuration() { return $this->membershipDuration; }
-    public function getDriveHistory() { return $this->driveHistory; }
-    public function getCurrentWorkout() { return $this->currentWorkout; }
-    public function getCurrentDiet() { return $this->currentDiet; }
-    public function getCoachID() { return $this->coachID; }
-
-
 }
+
+
+
+
+
+
 ?>

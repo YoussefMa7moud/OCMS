@@ -1,3 +1,34 @@
+<?php
+
+include './Classes/DB_Connection.php';
+include './Classes/Client.php';
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['clientName'];
+    $email = $_POST['clientEmail'];
+    $phoneNumber = $_POST['clientPhone'];
+    $age = $_POST['clientAge'];
+    $currentWeight = $_POST['clientWeight'];
+    $height = $_POST['clientHeight'];
+    $membershipType = $_POST['membershipType'];
+    $membershipStartDate = $_POST['membershipStart'];
+    $membershipDuration = $_POST['membershipDuration'];
+
+    $client = new Client($name, $email, $phoneNumber, $age, $currentWeight, $height, $membershipType);
+    $client->membershipStartDate = $membershipStartDate;
+    $client->membershipDuration = $membershipDuration;
+
+    $result = $client->addClientToDB($conn);
+
+
+}
+
+mysqli_close($conn);
+
+?>
+ 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,7 +175,7 @@
     <div class="main-content">
         <div class="section">
             <h2><i class="fas fa-user-plus"></i> Add New Member</h2>
-            <form id="addClientForm">
+            <form id="addClientForm" method="post">
                 <label for="clientName">Name:</label>
                 <input type="text" id="clientName" name="clientName" required>
 
@@ -183,13 +214,12 @@
     </div>
 
     <script>
-        document.getElementById('addClientForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Here you would typically send the form data to a server
-            // For this example, we'll just show an alert
-            alert('Member added successfully!');
-            this.reset();
-        });
+        // document.getElementById('addClientForm').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+     
+        //     alert('Member added successfully!');
+        //     this.reset();
+        // });
     </script>
 </body>
 </html>
