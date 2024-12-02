@@ -14,6 +14,8 @@ $result = $client->WaitingForPlan($conn);
 
 
 
+
+
 ?>
 
 
@@ -47,6 +49,25 @@ $result = $client->WaitingForPlan($conn);
             color: var(--on-bg-color);
             display: flex;
             min-height: 100vh;
+        }
+
+
+        #CP{
+            background-color: var(--secondary-color);
+            color: var(--on-bg-color);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+
+        }
+
+
+
+        #CP:hover{
+            background-color: var(--primary-color);
         }
         
         
@@ -195,7 +216,7 @@ if (is_array($result)) {
     echo '<div class="client-box">';
      echo '<span>' . htmlspecialchars($row['Name']) . '</span>';
      echo '<div>';
-     echo '<a href="Client-Profile.php" >Create Plan</a>';
+     echo '<a href="Client-Profile.php" id="CP">Create Plan</a>';
 
      echo '</div>';
      echo '</div>';

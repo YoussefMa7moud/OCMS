@@ -131,6 +131,25 @@
             color: var(--accent-color);
             margin-bottom: 5px;
         }
+
+
+        #BtPlane{
+            background-color: var(--secondary-color);
+            color: var(--on-bg-color);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+
+        #BtPlane:hover{
+            background-color: var(--primary-color);
+        }
+
         
         button {
             background-color: var(--secondary-color);
@@ -340,31 +359,14 @@
                 </div>
             </div>
             <div style="margin-top: 20px;">
-                <button onclick="editProfile()">Edit Profile</button>
-                <button onclick="updateWorkoutPlan()">Update Workout Plan</button>
-                <button onclick="updateDietPlan()">Update Diet Plan</button>
-                <button onclick="addNote()">Add Note</button>
+                <button >Edit Profile</button>
+                <a id="BtPlane" href="plan.php" >Update Plan</a>
+                <a  id="BtPlane">Add Note</a>
             </div>
         </div>
     </div>
 
-    <script>
-        function editProfile() {
-            alert('Edit profile functionality to be implemented');
-        }
-
-        function updateWorkoutPlan() {
-            alert('Update workout plan functionality to be implemented');
-        }
-
-        function updateDietPlan() {
-            alert('Update diet plan functionality to be implemented');
-        }
-
-        function addNote() {
-            alert('Add note functionality to be implemented');
-        }
-    </script>
+    
 </body>
 </html>
 

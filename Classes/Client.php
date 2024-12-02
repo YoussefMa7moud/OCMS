@@ -33,7 +33,7 @@ class Client {
             return "Error preparing statement: " . $db->error;
         }
 
-        // Bind parameters to the statement
+      
         $stmt->bind_param(
             "sssiddssi", 
             $this->name, 
@@ -85,6 +85,30 @@ class Client {
         }
     }
     
+
+
+
+
+////still Not working need to be fixed
+    public function WaitingNextCheckIn($db) {
+        $query = "SELECT * FROM client WHERE CNextCheckIn = CURDATE()";
+    
+        $stmt = $db->prepare($query);
+
+        if (!$stmt) {
+            return "Error preparing statement: " . $db->error;
+        }
+    
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return "Error executing query: " . $stmt->error;
+        }
+    }
+
+
 
 
 
