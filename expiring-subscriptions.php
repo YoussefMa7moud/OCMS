@@ -1,3 +1,25 @@
+<?php
+include './Classes/DB_Connection.php';
+include './Classes/Client.php';
+
+
+$db = $conn;
+// Instantiate the Client class
+$client = new Client();
+
+// Call  method
+$Expiring = $client->fetchClientsWithUpcomingMembershipEnd($db);
+
+
+
+
+
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,10 +105,31 @@
         button:hover {
             background-color: var(--primary-color);
         }
+
+
+        #CP{
+            background-color: var(--secondary-color);
+            color: var(--on-bg-color);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            margin-right: 10px;
+
+        }
+
+
+
+        #CP:hover{
+            background-color: var(--primary-color);
+        }
         
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
+                padding-top:40px;
             }
 
 
@@ -129,35 +172,31 @@
 </head>
 <body>
 <?php include('./Components/Nav.php'); ?>
-    <div class="main-content">
+    
+
+
+
+<div class="main-content">
         <div class="section">
-            <h2><i class="fas fa-calendar-times"></i> Expiring Memberships</h2>
-            <div class="membership-box">
-                <span>John Doe - Gold Membership expires in 3 days</span>
-                <div>
-                    <button onclick="viewProfile('John Doe')">View Profile</button>
-                    <button onclick="renewMembership('John Doe')">Renew Membership</button>
-                </div>
-            </div>
-            <div class="membership-box">
-                <span>Jane Smith - Silver Membership expires in 5 days</span>
-                <div>
-                    <button onclick="viewProfile('Jane Smith')">View Profile</button>
-                    <button onclick="renewMembership('Jane Smith')">Renew Membership</button>
-                </div>
-            </div>
-        </div>
-    </div>
+            <h2><i class="fas fa-calendar-times"></i> Expiring Memberships (in 5 Days)</h2>
+            
+            <?php
+if (is_array($Expiring)) {
+    foreach ($Expiring as $client) {
+        echo '<div class="membership-box">';
+        echo '<span>' . htmlspecialchars($client['Name']) . '   -    ' . htmlspecialchars($client['MembershipType']) . ' membership expires in ' . htmlspecialchars($client['MembershipEndDate']) . ' </span>';
+        echo '<div>';
+        echo '<a href="./Client-Profile.php?client_id=' . htmlspecialchars($client['clientid']) . '" id="CP">View Profile</a>';
+        echo '</div>';
+        echo '</div>';
+    }
+} else {
+    echo '<p>No memberships are expiring Soon.</p>';
+}
+?>
 
-    <script>
-        function viewProfile(name) {
-            alert(`Viewing profile of ${name}`);
-        }
 
-        function renewMembership(name) {
-            alert(`Renewing membership for ${name}`);
-        }
-    </script>
+    
 </body>
 </html>
 

@@ -129,6 +129,7 @@ mysqli_close($conn);
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
+                padding-top:40px;
             }
             
 

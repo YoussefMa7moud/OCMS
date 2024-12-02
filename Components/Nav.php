@@ -87,10 +87,15 @@
             color: var(--accent-color);
         }
         
+        .menu-toggle {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
                 z-index: 1000;
+                width: 100%;
             }
             
             .sidebar.active {
@@ -110,21 +115,35 @@
                 border-radius: 5px;
                 cursor: pointer;
             }
+
+            .sidebar-menu {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar-menu li {
+                width: 100%;
+            }
+
+            .sidebar-menu a {
+                width: 100%;
+                padding: 15px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <button class="menu-toggle" onclick="toggleMenu()">
-        <i class="fas fa-bars"></i>
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+        <i class="fas fa-bars" aria-hidden="true"></i>
     </button>
     <nav class="sidebar" id="sidebar">
         <ul class="sidebar-menu">
-            <li><a href="index.php" id="menu-dashboard"><i class="fas fa-dumbbell"></i>Dashboard</a></li>
-            <li><a href="search.php" id="menu-search"><i class="fas fa-search"></i>Search Members</a></li>
-            <li><a href="Add-Client.php" id="menu-add-client"><i class="fas fa-user-plus"></i>Add New Member</a></li>
-            <li><a href="expiring-subscriptions.php" id="menu-expiring"><i class="fas fa-calendar-times"></i>Expiring Memberships</a></li>
+            <li><a href="index.php" id="menu-dashboard"><i class="fas fa-dumbbell" aria-hidden="true"></i><span>Dashboard</span></a></li>
+            <li><a href="search.php" id="menu-search"><i class="fas fa-search" aria-hidden="true"></i><span>Search Members</span></a></li>
+            <li><a href="Add-Client.php" id="menu-add-client"><i class="fas fa-user-plus" aria-hidden="true"></i><span>Add New Member</span></a></li>
+            <li><a href="expiring-subscriptions.php" id="menu-expiring"><i class="fas fa-calendar-times" aria-hidden="true"></i><span>Expiring Memberships</span></a></li>
         </ul>
-        <div class="sidebar-footer">
+        <footer class="sidebar-footer">
             <div class="counter">
                 <span class="counter-label">Total Clients:</span>
                 <span class="counter-value" id="total-clients">0</span>
@@ -137,7 +156,7 @@
                 <span class="counter-label">Total Revenue:</span>
                 <span class="counter-value" id="total-revenue">$0</span>
             </div>
-        </div>
+        </footer>
     </nav>
 
     <script>
@@ -146,7 +165,6 @@
             sidebar.classList.toggle('active');
         }
 
-        // Function to set the active menu item
         function setActiveMenuItem() {
             const currentPage = window.location.pathname.split('/').pop();
             const menuItems = document.querySelectorAll('.sidebar-menu a');
@@ -159,19 +177,16 @@
             });
         }
 
-        // Call setActiveMenuItem when the page loads
-        window.addEventListener('load', setActiveMenuItem);
-
-        // Example function to update counters (replace with actual data fetching)
         function updateCounters() {
             document.getElementById('total-clients').textContent = '150';
             document.getElementById('active-clients').textContent = '120';
             document.getElementById('total-revenue').textContent = '$15,000';
         }
 
-        // Call updateCounters when the page loads
-        window.addEventListener('load', updateCounters);
+        window.addEventListener('load', () => {
+            setActiveMenuItem();
+            updateCounters();
+        });
     </script>
 </body>
 </html>
-

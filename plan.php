@@ -140,18 +140,10 @@
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
+            
             body {
                 flex-direction: column;
+                padding-top:40px;
             }
 
             .stats {

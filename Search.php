@@ -97,6 +97,7 @@
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
+                padding-top:40px;
             }
             
 
@@ -174,14 +175,6 @@
                 `;
                 searchResults.appendChild(resultDiv);
             });
-        }
-
-        function viewProfile(name) {
-            alert(`Viewing profile of ${name}`);
-        }
-
-        function openWorkoutPlan(name) {
-            alert(`Opening workout plan for ${name}`);
         }
     </script>
 </body>

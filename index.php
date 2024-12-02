@@ -4,14 +4,15 @@ include './Classes/DB_Connection.php';
 include './Classes/Client.php';
 
 
-// Create a Client object
-$client = new Client("Example Name", "example@example.com", "1234567890", 25, 70, 175, "Premium");
+$db = $conn;
+// Instantiate the Client class
+$client = new Client();
 
 // Call WaitingForPlan method
-$result = $client->WaitingForPlan($conn);
+$waitingForPlanClients = $client->WaitingForPlan($db);
 
-
-
+// Call fetchClientsForToday method
+$clientsForToday = $client->fetchClientsForToday($db);
 
 
 
@@ -49,6 +50,7 @@ $result = $client->WaitingForPlan($conn);
             color: var(--on-bg-color);
             display: flex;
             min-height: 100vh;
+          
         }
 
 
@@ -61,6 +63,7 @@ $result = $client->WaitingForPlan($conn);
             cursor: pointer;
             transition: background-color 0.3s;
             text-decoration: none;
+            margin-right: 10px;
 
         }
 
@@ -133,12 +136,18 @@ $result = $client->WaitingForPlan($conn);
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
+                padding-top:40px;
             }
 
             .main-content {
         margin-left: 0;
     }
             
+
+
+    #CP{
+        size:20px;
+    }
             .sidebar {
                 width: 100%;
                 height: auto;
@@ -176,75 +185,59 @@ $result = $client->WaitingForPlan($conn);
 
 
 
-    <div class="main-content">
-        <div class="date-display" id="currentDate"></div>
+<div class="main-content">
+    <div class="date-display" id="currentDate"></div>
 
-        <div class="section">
-            <h2><i class="fas fa-check-circle"></i> Checked-In Members</h2>
-            <div class="client-box">
-                <span>John Doe</span>
-                <div>
-                    <a href="./Client-Profile.php" onclick="viewProfile('John Doe')">View Profile</a>
-                    <button onclick="openWorkoutPlan('John Doe')">Workout Plan</button>
-                </div>
-            </div>
-            <div class="client-box">
-                <span>Jane Smith</span>
-                <div>
-                    <button onclick="viewProfile('Jane Smith')">View Profile</button>
-                    <button onclick="openWorkoutPlan('Jane Smith')">Workout Plan</button>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-       
-      <?php
-
-if (is_array($result)) {
-
-    echo ' <div class="section">';
-    echo ' <h2><i class="fas fa-clipboard-list"></i> Waiting for Workout Plan</h2>';
-   
- foreach ($result as $row) {
-    echo '<div class="client-box">';
-     echo '<span>' . htmlspecialchars($row['Name']) . '</span>';
-     echo '<div>';
-     echo '<a href="Client-Profile.php" id="CP">Create Plan</a>';
-
-     echo '</div>';
-     echo '</div>';
-     
- }
- echo '</div>';
-} else {
-
- echo "<p>Error: $result</p>";
-}
-
-
-
-
-?>
+    <!-- Display Clients for Today -->
+    <div class="section">
+        <h2><i class="fas fa-calendar-check"></i> Clients for Today</h2>
+        <?php
+        if (is_array($clientsForToday)) {
+            foreach ($clientsForToday as $client) {
+                echo '<div class="client-box">';
+                echo '<span>' . htmlspecialchars($client['Name']) . '</span>';
+                echo '<div>';
+                echo '<a id="CP" href="./Client-Profile.php?client_id=' . htmlspecialchars($client['clientid']) . '">Profile</a>';
+                echo '<a id="CP">Contact</a>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p>' . htmlspecialchars($clientsForToday) . '</p>';
+        }
+        ?>
     </div>
 
-    <script>
-        function updateDate() {
-            const dateDisplay = document.getElementById('currentDate');
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            dateDisplay.textContent = now.toLocaleDateString('en-US', options);
+    <!-- Display Clients Waiting for Workout Plan -->
+    <div class="section">
+        <h2><i class="fas fa-clipboard-list"></i> Waiting for Workout Plan</h2>
+        <?php
+        if (is_array($waitingForPlanClients)) {
+            foreach ($waitingForPlanClients as $client) {
+                echo '<div class="client-box">';
+                echo '<span>' . htmlspecialchars($client['Name']) . '</span>';
+                echo '<div>';
+                echo '<a href="./Client-Profile.php?client_id=' . htmlspecialchars($client['clientid']) . '" id="CP">Create Plan</a>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p>' . htmlspecialchars($waitingForPlanClients) . '</p>';
         }
+        ?>
+    </div>
+</div>
 
-    
-        updateDate();
-        setInterval(updateDate, 60000); 
-    </script>
+<script>
+    function updateDate() {
+        const dateDisplay = document.getElementById('currentDate');
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateDisplay.textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    updateDate();
+    setInterval(updateDate, 60000); 
+</script>
 </body>
 </html>
