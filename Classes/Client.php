@@ -3,6 +3,7 @@
 include './Classes/DB_Connection.php';
 
 class Client {
+    private $conn;
     private $name;
     private $email;
     private $phoneNumber;
@@ -14,7 +15,8 @@ class Client {
     public $membershipDuration;
 
     // Constructor with optional parameters
-    public function __construct($name = '', $email = '', $phoneNumber = '', $age = 0, $currentWeight = 0, $height = 0, $membershipType = '', $membershipStartDate = null, $membershipDuration = null) {
+    public function __construct($db,$name = '', $email = '', $phoneNumber = '', $age = 0, $currentWeight = 0, $height = 0, $membershipType = '', $membershipStartDate = null, $membershipDuration = null) {
+        $this->conn = $db;
         $this->name = $name;
         $this->email = $email;
         $this->phoneNumber = $phoneNumber;
@@ -178,7 +180,54 @@ class Client {
 
 
 
+    
 
+
+
+
+
+
+    public function searchClients($query) {
+        $query = trim($query);
+    
+        if ($query === '') {
+            return [];
+        }
+    
+        // Use prepared statements for security
+        $sql = "SELECT clientid, name AS Name, PhoneNumber AS PhoneNumber, MembershipType 
+                FROM client 
+                WHERE LOWER(name) LIKE ? 
+                   OR PhoneNumber LIKE ? 
+                   OR CAST(clientid AS CHAR) LIKE ?";
+    
+        // Use $this->conn instead of undefined $this->conn
+        if ($this->conn === null) {
+            die('Database connection is not established.');
+        }
+    
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt === false) {
+            die('Error preparing the statement: ' . $this->conn->error);
+        }
+    
+        $param = '%' . strtolower($query) . '%';
+        $stmt->bind_param("sss", $param, $param, $param);
+    
+        if (!$stmt->execute()) {
+            die('Execute failed: ' . $stmt->error);
+        }
+    
+        $result = $stmt->get_result();
+    
+        $clients = [];
+        while ($row = $result->fetch_assoc()) {
+            $clients[] = $row;
+        }
+    
+        return $clients;
+    }
+    
 
 
 
