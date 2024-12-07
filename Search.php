@@ -55,29 +55,31 @@ if (isset($_GET['query'])) {
             --on-bg-color: #ffffff;
             --on-surface-color: #e0e0e0;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Roboto', sans-serif;
         }
-
+        
         body {
             background-color: var(--bg-color);
             color: var(--on-bg-color);
             display: flex;
             min-height: 100vh;
         }
-
+        
+    
         .main-content {
             flex-grow: 1;
             padding: 20px;
             overflow-y: auto;
-            margin-left: 250px; /* Adjust this value to match the sidebar width */
-            padding: 20px;
-        }
 
+            margin-left: 250px; /* Adjust this value to match the sidebar width */
+    padding: 20px;
+}
+        
         .section {
             background-color: var(--surface-color);
             border-radius: 10px;
@@ -85,18 +87,18 @@ if (isset($_GET['query'])) {
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
+        
         .section h2 {
             margin-bottom: 15px;
             color: var(--primary-color);
             display: flex;
             align-items: center;
         }
-
+        
         .section h2 i {
             margin-right: 10px;
         }
-
+        
         input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -106,7 +108,7 @@ if (isset($_GET['query'])) {
             background-color: rgba(255, 255, 255, 0.1);
             color: var(--on-surface-color);
         }
-
+        
         button {
             background-color: var(--secondary-color);
             color: var(--on-bg-color);
@@ -116,22 +118,65 @@ if (isset($_GET['query'])) {
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
+        
         button:hover {
             background-color: var(--primary-color);
         }
-
+        
         #searchResults {
             margin-top: 20px;
         }
-
+        
         .client-result {
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 10px;
         }
-        </style>
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding-top:40px;
+            }
+            
+
+            .main-content {
+        margin-left: 0;
+    }
+
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                justify-content: space-around;
+            }
+            
+            .sidebar-menu li {
+                margin-bottom: 0;
+            }
+            
+            .sidebar-menu a {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 5px;
+            }
+            
+            .sidebar-menu a i {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+            
+            .sidebar-menu a span {
+                font-size: 12px;
+            }
+        }
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         // AJAX to dynamically fetch search results
@@ -146,7 +191,7 @@ if (isset($_GET['query'])) {
                     }
                 });
             } else {
-                $('#searchResults').html('<p>Type something to search...</p>');  // Show default message if no query
+                $('#searchResults').html('<p></p>');  // Show default message if no query
             }
         }
     </script>
@@ -166,7 +211,7 @@ if (isset($_GET['query'])) {
                 <?php if ($query): ?>
                     <p>No results found for "<?php echo htmlspecialchars($query); ?>".</p>
                 <?php else: ?>
-                    <p>Type something to search...</p>
+                    <p></p>
                 <?php endif; ?>
             <?php else: ?>
                 <?php foreach ($results as $client): ?>

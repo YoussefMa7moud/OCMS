@@ -217,7 +217,7 @@ $clientsForToday = $client->fetchClientsForToday($db);
                 echo '<div class="client-box">';
                 echo '<span>' . htmlspecialchars($client['Name']) . '</span>';
                 echo '<div>';
-                echo '<a href="./Client-Profile.php?client_id=' . htmlspecialchars($client['clientid']) . '" id="CP">Create Plan</a>';
+                echo '<a href="./Client-Profile.php?clientId=' . htmlspecialchars($client['clientid']) . '" id="CP">Create Plan</a>';
                 echo '</div>';
                 echo '</div>';
             }

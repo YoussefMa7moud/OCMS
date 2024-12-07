@@ -1,3 +1,40 @@
+<?php
+include './Classes/DB_Connection.php';  // Make sure this path is correct
+include './Classes/Client.php';  // Include the Client class
+$db = $conn;
+// Instantiate the Client class
+$client = new Client($db);  // Create an instance of the Client class
+
+// Check if clientId is set and valid
+if (isset($_GET['clientId']) && is_numeric($_GET['clientId'])) {
+    $clientId = $_GET['clientId'];
+
+    // Assuming $db is your database connection
+    $clientData = $client->getClientById($db, $clientId);
+
+    // Check if client data was retrieved successfully
+    if (is_array($clientData)) {
+        // Extract individual client details
+        $name = $clientData['Name'];
+        $age = $clientData['Age'];
+        $height = $clientData['Height'];
+        $weight = $clientData['CurrentWeight'];
+        $membershipType = $clientData['MembershipType'];
+        $expiryDate = $clientData['MembershipEndDate'];
+        $nextCheckIn = $clientData['NextCheckIn'];
+        $email = $clientData['email'];
+        $phoneNumber = $clientData['PhoneNumber'];
+    } else {
+        // If it's not an array, it's an error message
+        echo "<p>Error: " . htmlspecialchars($clientData) . "</p>";
+    }
+} else {
+    echo "<p>Invalid client ID.</p>";
+}
+?>
+
+
+<!-- HTML Code -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,7 +253,7 @@
                 margin-bottom: 10px;
             }
         }
-    </style>
+        </style>
 </head>
 <body>
 <?php include('./Components/Nav.php'); ?>
@@ -225,129 +262,98 @@
         <div class="section">
             <h2><i class="fas fa-user"></i> Member Profile</h2>
             <div class="profile-header">
-                <div class="profile-picture">JD</div>
-                <div class="profile-name">John Doe</div>
+                <!-- Profile Picture Placeholder, replace "JD" with the actual name or image -->
+                <div class="profile-picture"><?php echo strtoupper(substr($name, 0, 2)); ?></div>
+                <div class="profile-name"><?php echo $name; ?></div>
             </div>
             <div class="profile-info">
                 <div class="info-item">
                     <h3>Age</h3>
-                    <p>28 years</p>
+                    <p><?php echo $age; ?> years</p>
                 </div>
                 <div class="info-item">
                     <h3>Height</h3>
-                    <p>180 cm</p>
+                    <p><?php echo $height; ?> cm</p>
                 </div>
                 <div class="info-item">
                     <h3>Weight</h3>
-                    <p>75 kg</p>
+                    <p><?php echo $weight; ?> kg</p>
                 </div>
                 <div class="info-item">
                     <h3>BMI</h3>
-                    <p>23.1 (Normal)</p>
+                    <p><?php echo "Function TBI"; ?></p>
                 </div>
                 <div class="info-item">
                     <h3>Membership</h3>
-                    <p>Gold</p>
+                    <p><?php echo $membershipType; ?></p>
                 </div>
                 <div class="info-item">
                     <h3>Expiry Date</h3>
-                    <p>2023-12-31</p>
+                    <p><?php echo $expiryDate; ?></p>
                 </div>
-
                 <div class="info-item">
                     <h3>Next Check In</h3>
-                    <p>2023-12-31</p>
+                    <p><?php echo $nextCheckIn; ?></p>
                 </div>
-
                 <div class="info-item">
                     <h3>Email</h3>
-                    <p>test@test.com</p>
+                    <p><?php echo $email; ?></p>
                 </div>
-
                 <div class="info-item">
                     <h3>Phone Number</h3>
-                    <p>1010112212</p>
+                    <p><?php echo $phoneNumber; ?></p>
                 </div>
 
                 <div class="info-item">
-                    <h3>ID</h3>
-                    <p>X127dsa</p>
+                    <h3>Google Drive (History)</h3>
+                    <button>Google Drive</button>
                 </div>
 
                 <div class="info-item">
-                <h3>Google Drive (History)</h3>
-                    <Button>Google Drive</button>
-                </div>
-
-                <div class="info-item">
-                <h3>Contact Now</h3>
+                    <h3>Contact Now</h3>
                     <button>Whatsapp</button>
-                    
                 </div>
 
                 <div class="info-item">
-                <h3>Structured Message</h3>
-                    <Button>Extract Message (current Plan)</button>
-                   
-                </div>
-
-                <div class="info-item">
-                <h3>Renew Membership</h3>
-                 <select id="months" name="months">
-                <option value="1">1 Month</option>
-                <option value="3">3 Months</option>
-                <option value="6">6 Months</option>
-                <option value="12">12 Months</option>
-                </select>
-
-                <Button>Renwe Now</button>
+                    <h3>Renew Membership</h3>
+                    <select id="months" name="months">
+                        <option value="1">1 Month</option>
+                        <option value="3">3 Months</option>
+                        <option value="6">6 Months</option>
+                        <option value="12">12 Months</option>
+                    </select>
+                    <button>Renew Now</button>
                 </div>
             </div>
+
             <div class="workout-plan">
                 <h3>Current Workout Plan</h3>
-                <div class="plan-item">
-                    <h4>Monday & Thursday</h4>
-                    <p>Chest and Triceps</p>
-                    <ul>
-                        <li>Bench Press: 4 sets x 8-10 reps</li>
-                        <li>Incline Dumbbell Press: 3 sets x 10-12 reps</li>
-                        <li>Tricep Pushdowns: 3 sets x 12-15 reps</li>
-                    </ul>
-                </div>
-                <div class="plan-item">
-                    <h4>Tuesday & Friday</h4>
-                    <p>Back and Biceps</p>
-                    <ul>
-                        <li>Deadlifts: 4 sets x 6-8 reps</li>
-                        <li>Pull-ups: 3 sets x 8-10 reps</li>
-                        <li>Barbell Curls: 3 sets x 10-12 reps</li>
-                    </ul>
-                </div>
-                <div class="plan-item">
-                    <h4>Wednesday & Saturday</h4>
-                    <p>Legs and Shoulders</p>
-                    <ul>
-                        <li>Squats: 4 sets x 8-10 reps</li>
-                        <li>Leg Press: 3 sets x 10-12 reps</li>
-                        <li>Military Press: 3 sets x 8-10 reps</li>
-                    </ul>
-                </div>
+                <?php foreach ($workoutPlan as $workout): ?>
+                    <div class="plan-item">
+                        <h4><?php echo $workout['day']; ?></h4>
+                        <p><?php echo $workout['description']; ?></p>
+                        <ul>
+                            <?php
+                                $exercises = json_decode($workout['exercises'], true); // Assuming exercises are stored as JSON
+                                foreach ($exercises as $exercise) {
+                                    echo "<li>$exercise</li>";
+                                }
+                            ?>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
             </div>
+
             <div class="diet-plan">
                 <h3>Current Diet Plan</h3>
-                <div class="plan-item">
-                    <h4>Breakfast</h4>
-                    <p>Oatmeal with berries and a protein shake</p>
-                </div>
-                <div class="plan-item">
-                    <h4>Lunch</h4>
-                    <p>Grilled chicken breast with brown rice and vegetables</p>
-                </div>
-                <div class="plan-item">
-                    <h4>Dinner</h4>
-                    <p>Salmon with sweet potato and green salad</p>
-                </div>
+                <?php foreach ($dietPlan as $diet): ?>
+                    <div class="plan-item">
+                        <h4><?php echo $diet['meal']; ?></h4>
+                        <p><?php echo $diet['description']; ?></p>
+                    </div>
+                <?php endforeach; ?>
             </div>
+
             <div class="notes">
                 <h3>Trainer Notes</h3>
                 <div class="note">
@@ -359,15 +365,13 @@
                     <p>Discussed nutrition plan. John needs to increase protein intake.</p>
                 </div>
             </div>
+
             <div style="margin-top: 20px;">
-                <button >Edit Profile</button>
-                <a id="BtPlane" href="plan.php" >Update Plan</a>
-                <a  id="BtPlane">Add Note</a>
+                <button>Edit Profile</button>
+                <a id="BtPlane" href="plan.php">Update Plan</a>
+                <a id="BtPlane">Add Note</a>
             </div>
         </div>
     </div>
-
-    
 </body>
 </html>
-

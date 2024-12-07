@@ -187,7 +187,7 @@ class Client {
 
 
 
-    public function searchClients($query) {
+    public function searchClients($db,$query) {
         $query = trim($query);
     
         if ($query === '') {
@@ -226,6 +226,46 @@ class Client {
         }
     
         return $clients;
+    }
+    
+
+
+
+
+
+    public function getClientById($db, $clientId) {
+        // Ensure the clientId is valid
+        if (empty($clientId) || !is_numeric($clientId)) {
+            return "Invalid client ID.";
+        }
+    
+        // Query to fetch client by ID
+        $query = "SELECT * FROM client WHERE clientid = ?"; 
+    
+        // Prepare the statement
+        $stmt = $db->prepare($query);
+        if (!$stmt) {
+            return "Error preparing statement: " . $db->error;
+        }
+    
+        // Bind the client ID to the statement
+        $stmt->bind_param("i", $clientId);
+    
+        // Execute the statement
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            
+            // Check if the client exists
+            if ($result->num_rows > 0) {
+                // Fetch and return the client data as an associative array
+                return $result->fetch_assoc();
+            } else {
+                // If no client is found, return a specific message
+                return "No client found with the given ID.";
+            }
+        } else {
+            return "Error executing query: " . $stmt->error;
+        }
     }
     
 
