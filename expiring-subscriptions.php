@@ -5,7 +5,7 @@ include './Classes/Client.php';
 
 $db = $conn;
 // Instantiate the Client class
-$client = new Client();
+$client = new Client($db);
 
 // Call  method
 $Expiring = $client->fetchClientsWithUpcomingMembershipEnd($db);
