@@ -215,9 +215,9 @@ $clientsForToday = $client->fetchClientsForToday($db);
         if (is_array($waitingForPlanClients)) {
             foreach ($waitingForPlanClients as $client) {
                 echo '<div class="client-box">';
-                echo '<span>' . htmlspecialchars($client['Name']) . '</span>';
+                echo '<span>' . htmlspecialchars($client['name']) . '</span>';
                 echo '<div>';
-                echo '<a href="./Client-Profile.php?clientId=' . htmlspecialchars($client['clientid']) . '" id="CP">Create Plan</a>';
+                echo '<a href="./Client-Profile.php?clientId=' . htmlspecialchars($client['id']) . '" id="CP">Create Plan</a>';
                 echo '</div>';
                 echo '</div>';
             }

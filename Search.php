@@ -27,10 +27,11 @@ if (isset($_GET['query'])) {
             echo '<div class="client-result">
                     <h3>' . htmlspecialchars($client['Name']) . '</h3>
                     <p>Phone: ' . htmlspecialchars($client['PhoneNumber']) . '</p>
-                    <p>Membership: ' . htmlspecialchars($client['MembershipType']) . '</p>
-                    <button onclick="viewProfile(' . $client['clientid'] . ')">View Profile</button>
+                    <p>Membership: ' . htmlspecialchars($client['membership_type']) . '</p>
+                    <button onclick="window.location.href=\'Client-Profile.php?id=' . $client['id'] . '\'">View Profile</button>
                   </div>';
         }
+        
     }
     exit; // Stop further processing after AJAX
 }

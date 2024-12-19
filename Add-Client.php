@@ -1,10 +1,9 @@
 <?php
-
 include './Classes/DB_Connection.php';
 include './Classes/Client.php';
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve form data
     $name = $_POST['clientName'];
     $email = $_POST['clientEmail'];
     $phoneNumber = $_POST['clientPhone'];
@@ -15,18 +14,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $membershipStartDate = $_POST['membershipStart'];
     $membershipDuration = $_POST['membershipDuration'];
 
-    $client = new Client($name, $email, $phoneNumber, $age, $currentWeight, $height, $membershipType);
-    $client->membershipStartDate = $membershipStartDate;
-    $client->membershipDuration = $membershipDuration;
+   
+    $client = new Client(
+        $conn,
+        $name,
+        $email,
+        $phoneNumber,
+        $age,
+        $currentWeight,
+        $height,
+        $membershipType,
+        $membershipStartDate,
+        $membershipDuration
+    );
+
 
     $result = $client->addClientToDB($conn);
 
 
+    if ($result === true) {
+        echo "<script>alert('Client added successfully!');</script>";
+    } else {
+        echo "<script>alert('Error: $result');</script>";
+    }
 }
 
+// Close the database connection
 mysqli_close($conn);
-
 ?>
+
  
 
 <!DOCTYPE html>
