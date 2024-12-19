@@ -187,7 +187,7 @@ class Client {
 
 
 
-    public function searchClients($db,$query) {
+    public function searchClients($query) {
         $query = trim($query);
     
         if ($query === '') {

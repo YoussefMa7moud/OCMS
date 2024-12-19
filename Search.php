@@ -183,7 +183,7 @@ if (isset($_GET['query'])) {
         function searchClients(query) {
             if (query.length >= 1) {
                 $.ajax({
-                    url: 'search.php',  // Same page for AJAX request
+                    url: 'search.php',  
                     type: 'GET',
                     data: { query: query },  // Pass query as GET parameter
                     success: function(data) {
